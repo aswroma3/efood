@@ -4,31 +4,31 @@ import asw.efood.common.event.DomainEvent;
 
 public class OrderConsumerInvalidatedEvent implements DomainEvent {
 
-    private String orderId;
+    private Long orderId;
 
-    private String consumerId;
+    private Long consumerId;
 
     public OrderConsumerInvalidatedEvent() {
     }
 
-    public OrderConsumerInvalidatedEvent(String orderId, String consumerId) {
+    public OrderConsumerInvalidatedEvent(Long orderId, Long consumerId) {
         this.orderId = orderId;
         this.consumerId = consumerId;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public String getConsumerId() {
+    public Long getConsumerId() {
         return consumerId;
     }
 
-    public void setConsumerId(String consumerId) {
+    public void setConsumerId(Long consumerId) {
         this.consumerId = consumerId;
     }
 

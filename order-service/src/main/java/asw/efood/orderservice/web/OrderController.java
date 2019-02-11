@@ -37,7 +37,7 @@ public class OrderController {
 	}
 
 	@RequestMapping(path="/{orderId}", method=RequestMethod.GET)
-	public ResponseEntity<GetOrderResponse> getOrder(@PathVariable String orderId) {
+	public ResponseEntity<GetOrderResponse> getOrder(@PathVariable Long orderId) {
 		Order order = orderService.findById(orderId);
 		if (order!=null) {
 			return new ResponseEntity<>(makeGetOrderResponse(order), HttpStatus.OK);

@@ -34,17 +34,17 @@ public class OrderHistoryService {
     }
 
     /* Cerca un consumatore. */
-    public Consumer findConsumer(String consumerId) {
+    public Consumer findConsumer(Long consumerId) {
         return consumerRepository.findById(consumerId).orElse(null);
     }
 
     /* Cerca un ristorante. */
-    public Restaurant findRestaurant(String restaurantId) {
+    public Restaurant findRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId).orElse(null);
     }
 
     /* Cerca un ordine. */
-    public Order findOrder(String orderId) {
+    public Order findOrder(Long orderId) {
         return orderRepository.findById(orderId).orElse(null);
     }
 

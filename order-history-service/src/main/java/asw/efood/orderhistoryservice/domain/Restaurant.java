@@ -7,24 +7,24 @@ import javax.persistence.Id;
 public class Restaurant {
 
     @Id
-    private String restaurantId;
+    private Long restaurantId;
     private String name;
     private String city;
 
     public Restaurant() {
     }
 
-    public Restaurant(String restaurantId, String name, String city) {
+    public Restaurant(Long restaurantId, String name, String city) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.city = city;
     }
 
-    public String getRestaurantId() {
+    public Long getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(String restaurantId) {
+    public void setRestaurantId(Long restaurantId) {
         this.restaurantId = restaurantId;
     }
 

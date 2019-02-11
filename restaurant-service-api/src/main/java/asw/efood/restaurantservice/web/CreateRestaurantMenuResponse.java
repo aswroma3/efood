@@ -2,20 +2,20 @@ package asw.efood.restaurantservice.web;
 
 public class CreateRestaurantMenuResponse {
 
-	private String restaurantId;
+	private Long restaurantId;
 
 	public CreateRestaurantMenuResponse() {
 	}
 
-	public CreateRestaurantMenuResponse(String restaurantId) {
+	public CreateRestaurantMenuResponse(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 
-	public String getRestaurantId() {
+	public Long getRestaurantId() {
 		return restaurantId;
 	}
 
-	public void setRestaurantId(String restaurantId) {
+	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 }

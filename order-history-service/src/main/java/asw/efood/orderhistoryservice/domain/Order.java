@@ -9,40 +9,40 @@ import javax.persistence.Table;
 public class Order {
 
     @Id
-    private String orderId;
-    private String consumerId;
-    private String restaurantId;
+    private Long orderId;
+    private Long consumerId;
+    private Long restaurantId;
 
     public Order() {
     }
 
-    public Order(String orderId, String consumerId, String restaurantId) {
+    public Order(Long orderId, Long consumerId, Long restaurantId) {
         this.orderId = orderId;
         this.consumerId = consumerId;
         this.restaurantId = restaurantId;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public String getConsumerId() {
+    public Long getConsumerId() {
         return consumerId;
     }
 
-    public void setConsumerId(String consumerId) {
+    public void setConsumerId(Long consumerId) {
         this.consumerId = consumerId;
     }
 
-    public String getRestaurantId() {
+    public Long getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(String restaurantId) {
+    public void setRestaurantId(Long restaurantId) {
         this.restaurantId = restaurantId;
     }
 

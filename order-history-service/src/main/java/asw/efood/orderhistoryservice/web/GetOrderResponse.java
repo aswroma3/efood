@@ -2,7 +2,7 @@ package asw.efood.orderhistoryservice.web;
 
 public class GetOrderResponse {
 
-    private String orderId;
+    private Long orderId;
 
     private String customerFirstName;
     private String customerLastName;
@@ -13,7 +13,7 @@ public class GetOrderResponse {
     public GetOrderResponse() {
     }
 
-    public GetOrderResponse(String orderId, String customerFirstName, String customerLastName, String restaurantName, String restaurantCity) {
+    public GetOrderResponse(Long orderId, String customerFirstName, String customerLastName, String restaurantName, String restaurantCity) {
         this.orderId = orderId;
         this.customerFirstName = customerFirstName;
         this.customerLastName = customerLastName;
@@ -21,11 +21,11 @@ public class GetOrderResponse {
         this.restaurantCity = restaurantCity;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

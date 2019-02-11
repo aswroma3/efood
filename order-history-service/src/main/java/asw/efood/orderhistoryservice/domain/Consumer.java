@@ -7,24 +7,24 @@ import javax.persistence.Id;
 public class Consumer {
 
     @Id
-    private String consumerId;
+    private Long consumerId;
     private String firstName;
     private String lastName;
 
     public Consumer() {
     }
 
-    public Consumer(String consumerId, String firstName, String lastName) {
+    public Consumer(Long consumerId, String firstName, String lastName) {
         this.consumerId = consumerId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public String getConsumerId() {
+    public Long getConsumerId() {
         return consumerId;
     }
 
-    public void setConsumerId(String consumerId) {
+    public void setConsumerId(Long consumerId) {
         this.consumerId = consumerId;
     }
 

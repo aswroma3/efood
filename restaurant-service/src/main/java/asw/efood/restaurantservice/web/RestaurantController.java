@@ -31,7 +31,7 @@ public class RestaurantController {
 
 	/** Crea un nuovo menu per il ristorante con restaurantId. */
 	@RequestMapping(path="/{restaurantId}/menu", method=RequestMethod.POST)
-	public CreateRestaurantMenuResponse createRestaurantMenu(@PathVariable String restaurantId, @RequestBody CreateRestaurantMenuRequest request) {
+	public CreateRestaurantMenuResponse createRestaurantMenu(@PathVariable Long restaurantId, @RequestBody CreateRestaurantMenuRequest request) {
 		List<MenuItem> menuItems = getMenuItems(request);
 		Restaurant restaurant = restaurantService.createMenu(restaurantId, menuItems);
 		return makeCreateRestaurantMenuResponse(restaurant);
@@ -52,7 +52,7 @@ public class RestaurantController {
 
 	/** Trova il ristorante con restaurantId. */
 	@RequestMapping(path="/{restaurantId}", method=RequestMethod.GET)
-	public ResponseEntity<GetRestaurantResponse> getRestaurant(@PathVariable String restaurantId) {
+	public ResponseEntity<GetRestaurantResponse> getRestaurant(@PathVariable Long restaurantId) {
 		Restaurant restaurant = restaurantService.findById(restaurantId);
 		if (restaurant!=null) {
 			return new ResponseEntity<>(makeGetRestaurantResponse(restaurant), HttpStatus.OK);
@@ -69,7 +69,7 @@ public class RestaurantController {
 
 	/** Trova il menu del ristorante con restaurantId. */
 	@RequestMapping(path="/{restaurantId}/menu", method=RequestMethod.GET)
-	public ResponseEntity<GetRestaurantMenuResponse> getRestaurantMenu(@PathVariable String restaurantId) {
+	public ResponseEntity<GetRestaurantMenuResponse> getRestaurantMenu(@PathVariable Long restaurantId) {
 		Restaurant restaurant = restaurantService.findById(restaurantId);
 		if (restaurant!=null) {
 			return new ResponseEntity<>(makeGetRestaurantMenuResponse(restaurant), HttpStatus.OK);

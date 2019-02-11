@@ -3,7 +3,8 @@ package asw.efood.restaurantservice.event;
 import asw.efood.common.event.DomainEvent;
 
 public class RestaurantCreatedEvent implements DomainEvent {
-    private String restaurantId;
+
+    private Long restaurantId;
 
     private String name;
     private String city;
@@ -11,17 +12,17 @@ public class RestaurantCreatedEvent implements DomainEvent {
     public RestaurantCreatedEvent() {
     }
 
-    public RestaurantCreatedEvent(String restaurantId, String name, String city) {
+    public RestaurantCreatedEvent(Long restaurantId, String name, String city) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.city = city;
     }
 
-    public String getRestaurantId() {
+    public Long getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(String restaurantId) {
+    public void setRestaurantId(Long restaurantId) {
         this.restaurantId = restaurantId;
     }
 

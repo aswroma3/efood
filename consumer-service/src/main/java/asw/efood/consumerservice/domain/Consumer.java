@@ -1,13 +1,13 @@
 package asw.efood.consumerservice.domain;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 public class Consumer {
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 	
 	private String firstName; 
 	private String lastName; 
@@ -17,14 +17,15 @@ public class Consumer {
 	public Consumer(String firstName, String lastName) {
 		this.firstName = firstName; 
 		this.lastName = lastName;
-		this.id = "CUST-" + UUID.randomUUID().toString();
+		/* se necessario, assegna l'id */
+		/* this.id = "CUST-" + UUID.randomUUID().toString(); */
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

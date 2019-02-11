@@ -2,7 +2,7 @@ package asw.efood.restaurantservice.web;
 
 public class GetRestaurantResponse {
 
-	private String restaurantId;
+	private Long restaurantId;
 	
 	private String name;
 	private String city;
@@ -10,17 +10,17 @@ public class GetRestaurantResponse {
 	public GetRestaurantResponse() {
 	}
 
-	public GetRestaurantResponse(String restaurantId, String name, String city) {
+	public GetRestaurantResponse(Long restaurantId, String name, String city) {
 		this.restaurantId = restaurantId;
 		this.name = name;
 		this.city = city;
 	}
 
-	public String getRestaurantId() {
+	public Long getRestaurantId() {
 		return restaurantId;
 	}
 
-	public void setRestaurantId(String restaurantId) {
+	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 

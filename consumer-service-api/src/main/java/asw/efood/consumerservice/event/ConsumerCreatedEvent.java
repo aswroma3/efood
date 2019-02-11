@@ -4,7 +4,7 @@ import asw.efood.common.event.DomainEvent;
 
 public class ConsumerCreatedEvent implements DomainEvent {
 
-    private String consumerId;
+    private Long consumerId;
 
     private String firstName;
     private String lastName;
@@ -12,17 +12,17 @@ public class ConsumerCreatedEvent implements DomainEvent {
     public ConsumerCreatedEvent() {
     }
 
-    public ConsumerCreatedEvent(String consumerId, String firstName, String lastName) {
+    public ConsumerCreatedEvent(Long consumerId, String firstName, String lastName) {
         this.consumerId = consumerId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public String getConsumerId() {
+    public Long getConsumerId() {
         return consumerId;
     }
 
-    public void setConsumerId(String consumerId) {
+    public void setConsumerId(Long consumerId) {
         this.consumerId = consumerId;
     }
 

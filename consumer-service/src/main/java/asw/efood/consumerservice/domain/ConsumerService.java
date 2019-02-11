@@ -33,13 +33,13 @@ public class ConsumerService {
 		return new ConsumerCreatedEvent(consumer.getId(), consumer.getFirstName(), consumer.getLastName());
 	}
 	
-	public Consumer findById(String consumerId) {
+	public Consumer findById(Long consumerId) {
 		return consumerRepository.findById(consumerId).orElse(null);
 	}
 
 	public List<Consumer> findAll() { return consumerRepository.findAll(); }
 
-	public void validateOrderConsumer(String orderId, String consumerId) {
+	public void validateOrderConsumer(Long orderId, Long consumerId) {
 		Consumer consumer = findById(consumerId);
 		if (consumer!=null) {
 			OrderConsumerValidatedEvent event = new OrderConsumerValidatedEvent(orderId, consumerId);

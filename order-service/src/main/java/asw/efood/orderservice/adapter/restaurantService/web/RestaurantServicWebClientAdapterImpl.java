@@ -26,7 +26,7 @@ public class RestaurantServicWebClientAdapterImpl implements RestaurantServiceAd
         this.webClient = webClientBuilder.baseUrl(restaurantServiceUri).build();
     }
 
-    public boolean validateRestaurant(String restaurantId) {
+    public boolean validateRestaurant(Long restaurantId) {
         String restaurantUrl = restaurantServiceUri + "/restaurants/{restaurantId}";
         logger.info("Looking for " + restaurantUrl + " with " + restaurantId);
         GetRestaurantResponse restaurant = null;

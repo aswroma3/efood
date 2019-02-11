@@ -7,7 +7,8 @@ import java.util.UUID;
 public class Restaurant {
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 	
 	private String name;
 	private String city;
@@ -20,7 +21,7 @@ public class Restaurant {
 	public Restaurant(String name, String city) {
 		this.name = name;
 		this.city = city;
-		this.id = "REST-" + UUID.randomUUID().toString();
+		/* this.id = "REST-" + UUID.randomUUID().toString(); */
 	}
 
 	public Restaurant(String name, String city, RestaurantMenu menu) {
@@ -28,11 +29,11 @@ public class Restaurant {
 		this.menu = menu;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id; 
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

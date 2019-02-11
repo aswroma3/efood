@@ -93,7 +93,7 @@ public class ConsumerController {
 
 	/** Trova il consumatore con consumerId. */
 	@RequestMapping(path="/{consumerId}", method=RequestMethod.GET)
-	public ResponseEntity<GetConsumerResponse> getConsumer(@PathVariable String consumerId) {
+	public ResponseEntity<GetConsumerResponse> getConsumer(@PathVariable Long consumerId) {
 		Consumer consumer = consumerService.findById(consumerId);
 		if (consumer!=null) {
 			return new ResponseEntity<>(makeGetConsumerResponse(consumer), HttpStatus.OK);

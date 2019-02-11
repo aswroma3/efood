@@ -31,7 +31,8 @@ Per identificare le entità e per generare gli identificatori ci sono diverse po
 * Usare una classe value object che incapsula l'itemId. Per esempio, *OrderId*. 
   La soluzione più complessa. 
   
-Per semplicità, mi attesto sulla seconda soluzione. 
+Dopo aver provato con successo la prima e la seconda soluzione, preferisco attestarmi sulla prima soluzione (per semplicità nell'uso "manuale" del sistema). 
+Di conseguenza, gli eventi di dominio dovranno essere generati da un servizio (e non direttamente da un'entità o aggregato).  
 
 ### Problemi aperti 
 

@@ -8,15 +8,16 @@ import java.util.*;
 public class Order {
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 
 //	@Id
 //	@GeneratedValue
 //	private Long id;
 
-	private String consumerId;
+	private Long consumerId;
 
-	private String restaurantId;
+	private Long restaurantId;
 
 	@ElementCollection
 	private List<OrderLineItem> orderLineItems;
@@ -26,35 +27,35 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(String consumerId, String restaurantId, List<OrderLineItem> orderLineItems) {
+	public Order(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		this.consumerId = consumerId;
 		this.restaurantId = restaurantId;
 		this.orderLineItems = orderLineItems;
 		this.state = OrderState.PENDING;
-		this.id = "ORDE-" + UUID.randomUUID().toString();
+		/* this.id = "ORDE-" + UUID.randomUUID().toString(); */
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getConsumerId() {
+	public Long getConsumerId() {
 		return consumerId;
 	}
 
-	public void setConsumerId(String consumerId) {
+	public void setConsumerId(Long consumerId) {
 		this.consumerId = consumerId;
 	}
 
-	public String getRestaurantId() {
+	public Long getRestaurantId() {
 		return restaurantId;
 	}
 
-	public void setRestaurantId(String restaurantId) {
+	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 
@@ -74,7 +75,7 @@ public class Order {
 		this.state = state;
 	}
 
-	public static Order create(String customerId, String restaurantId, List<OrderLineItem> orderLineItems) {
+	public static Order create(Long customerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		return new Order(customerId, restaurantId, orderLineItems);
 	}
 

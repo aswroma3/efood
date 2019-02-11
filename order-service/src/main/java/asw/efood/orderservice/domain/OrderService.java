@@ -28,13 +28,13 @@ public class OrderService {
 	private DomainEventPublisher domainEventPublisher;
 
 	/* Creazione di un nuovo ordine. */
-	public Order create(String consumerId, String restaurantId, List<OrderLineItem> orderLineItems) {
+	public Order create(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		return createAsincrona(consumerId, restaurantId, orderLineItems);
 		// return createSincrona(consumerId, restaurantId, orderLineItems);
 	}
 
 	/* Creazione di un nuovo ordine. Versione basata su eventi. */
-	public Order createAsincrona(String consumerId, String restaurantId, List<OrderLineItem> orderLineItems) {
+	public Order createAsincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		/* crea e salva l'ordine */
 		Order order = Order.create(consumerId, restaurantId, orderLineItems);
 		order = orderRepository.save(order);
@@ -53,7 +53,7 @@ public class OrderService {
 	}
 
 	/* Creazione di un nuovo ordine. Versione sincrona (senza eventi) e sequenziale. */
-	public Order createSincrona(String consumerId, String restaurantId, List<OrderLineItem> orderLineItems) {
+	public Order createSincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		Order order = Order.create(consumerId, restaurantId, orderLineItems);
 		order = orderRepository.save(order);
 		boolean consumerOk = consumerService.validateConsumer(order.getConsumerId());
@@ -73,11 +73,11 @@ public class OrderService {
 		return order;
 	}
 
-	public Order findById(String orderId) {
+	public Order findById(Long orderId) {
 		return orderRepository.findById(orderId).orElse(null);
 	}
 
-	public Order confirmConsumer(String orderId, String consumerId) {
+	public Order confirmConsumer(Long orderId, Long consumerId) {
 		Order order = findById(orderId);
 		if (order.getState().equals(OrderState.PENDING)) {
 			order.setState(OrderState.CONSUMER_APPROVED);
@@ -89,7 +89,7 @@ public class OrderService {
 		return order;
 	}
 
-	public Order invalidateConsumer(String orderId, String consumerId) {
+	public Order invalidateConsumer(Long orderId, Long consumerId) {
 		Order order = findById(orderId);
 		order.setState(OrderState.INVALID);
 		order = orderRepository.save(order);

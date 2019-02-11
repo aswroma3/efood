@@ -20,7 +20,7 @@ public class OrderHistoryController {
     private OrderHistoryService orderHistoryService;
 
     @RequestMapping(path="/{orderId}", method= RequestMethod.GET)
-    public ResponseEntity<GetOrderResponse> getOrder(@PathVariable String orderId) {
+    public ResponseEntity<GetOrderResponse> getOrder(@PathVariable Long orderId) {
         try {
             Order order = orderHistoryService.findOrder(orderId);
             Consumer consumer = orderHistoryService.findConsumer(order.getConsumerId());

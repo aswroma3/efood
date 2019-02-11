@@ -51,7 +51,7 @@ public class ConsumerServiceGrpcAdapterImpl implements ConsumerServiceAdapter {
     }
 
     /* usa il future stub */
-    public boolean validateConsumer(String consumerId) {
+    public boolean validateConsumer(Long consumerId) {
         logger.info("Looking for consumer with " + consumerId);
         GetConsumerRequest request = GetConsumerRequest.newBuilder().setConsumerId(consumerId).build();
         GetConsumerReply reply = null;
@@ -74,7 +74,7 @@ public class ConsumerServiceGrpcAdapterImpl implements ConsumerServiceAdapter {
     }
 
     /* usa il blocking stub */
-    public boolean validateConsumerBlocking(String consumerId) {
+    public boolean validateConsumerBlocking(Long consumerId) {
         logger.info("Looking for consumer with " + consumerId);
         GetConsumerRequest request = GetConsumerRequest.newBuilder().setConsumerId(consumerId).build();
         GetConsumerReply reply = null;

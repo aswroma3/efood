@@ -4,28 +4,28 @@ import java.util.List;
 
 public class CreateOrderRequest {
 
-	private String consumerId;
+	private Long consumerId;
 
-	private String restaurantId;
+	private Long restaurantId;
 
 	private List<LineItem> lineItems;
 
 	public CreateOrderRequest() {
 	}
 
-	public String getConsumerId() {
+	public Long getConsumerId() {
 		return consumerId;
 	}
 
-	public void setConsumerId(String consumerId) {
+	public void setConsumerId(Long consumerId) {
 		this.consumerId = consumerId;
 	}
 
-	public String getRestaurantId() {
+	public Long getRestaurantId() {
 		return restaurantId;
 	}
 
-	public void setRestaurantId(String restaurantId) {
+	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 

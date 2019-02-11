@@ -12,11 +12,11 @@ service ConsumerService {
 }
 
 message GetConsumerRequest {
-  string consumerId = 1;
+  int64 consumerId = 1;
 }
 
 message GetConsumerReply {
-  string consumerId = 1;
+  int64 consumerId = 1;
   string firstName = 2;
   string lastName = 3;
 }

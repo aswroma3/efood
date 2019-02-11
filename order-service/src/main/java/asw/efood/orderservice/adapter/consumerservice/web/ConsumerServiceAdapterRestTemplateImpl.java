@@ -19,7 +19,7 @@ public class ConsumerServiceAdapterRestTemplateImpl implements ConsumerServiceAd
 
     private Logger logger = Logger.getLogger("ConsumerServiceAdapter");
 
-    public boolean validateConsumer(String consumerId) {
+    public boolean validateConsumer(Long consumerId) {
         RestTemplate restTemplate = new RestTemplate();
         String consumerUrl = consumerServiceUri + "/consumers/{consumerId}";
         logger.info("Looking for " + consumerUrl + " with " + consumerId);

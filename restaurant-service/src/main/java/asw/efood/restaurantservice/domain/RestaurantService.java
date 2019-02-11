@@ -31,7 +31,7 @@ public class RestaurantService {
 		return new RestaurantCreatedEvent(restaurant.getId(), restaurant.getName(), restaurant.getCity());
 	}
 
-	public Restaurant createMenu(String restaurantId, List<MenuItem> menuItems) {
+	public Restaurant createMenu(Long restaurantId, List<MenuItem> menuItems) {
 		RestaurantMenu menu = new RestaurantMenu(menuItems);
 
 		Restaurant restaurant = findById(restaurantId);
@@ -40,7 +40,7 @@ public class RestaurantService {
 		return restaurant;
 	}
 
-	public Restaurant findById(String restaurantId) {
+	public Restaurant findById(Long restaurantId) {
 		return restaurantRepository.findById(restaurantId).orElse(null);
 	}
 

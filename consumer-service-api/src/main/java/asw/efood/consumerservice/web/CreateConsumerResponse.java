@@ -2,20 +2,20 @@ package asw.efood.consumerservice.web;
 
 public class CreateConsumerResponse {
 
-	private String consumerId;
+	private Long consumerId;
 
 	public CreateConsumerResponse() {
 	}
 
-	public CreateConsumerResponse(String consumerId) {
+	public CreateConsumerResponse(Long consumerId) {
 		this.consumerId = consumerId;
 	}
 
-	public String getConsumerId() {
+	public Long getConsumerId() {
 		return consumerId;
 	}
 
-	public void setConsumerId(String consumerId) {
+	public void setConsumerId(Long consumerId) {
 		this.consumerId = consumerId;
 	}
 }

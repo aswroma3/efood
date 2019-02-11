@@ -25,7 +25,7 @@ public class ConsumerServiceWebClientAdapterImpl implements ConsumerServiceAdapt
         this.webClient = webClientBuilder.baseUrl(consumerServiceUri).build();
     }
 
-    public boolean validateConsumer(String consumerId) {
+    public boolean validateConsumer(Long consumerId) {
         String consumerUrl = consumerServiceUri + "/consumers/{consumerId}";
         logger.info("Looking for " + consumerUrl + " with " + consumerId);
         GetConsumerResponse consumer = null;
