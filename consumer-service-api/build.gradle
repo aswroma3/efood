@@ -58,6 +58,8 @@ dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
 }
 
 jar {

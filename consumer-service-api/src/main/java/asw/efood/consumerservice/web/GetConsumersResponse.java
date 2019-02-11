@@ -1,24 +1,17 @@
 package asw.efood.consumerservice.web;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetConsumersResponse {
 
 	private List<GetConsumerResponse> consumers;
 
-	public GetConsumersResponse() {
-	}
-
-	public GetConsumersResponse(List<GetConsumerResponse> consumers) {
-		this.consumers = consumers;
-	}
-
-	public List<GetConsumerResponse> getConsumers() {
-		return consumers;
-	}
-
-	public void setConsumers(List<GetConsumerResponse> consumers) {
-		this.consumers = consumers;
-	}
 }
 

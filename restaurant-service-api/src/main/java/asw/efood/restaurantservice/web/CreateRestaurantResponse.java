@@ -1,22 +1,15 @@
 package asw.efood.restaurantservice.web;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateRestaurantResponse {
 
 	private Long restaurantId;
 
-	public CreateRestaurantResponse() {
-	}
-
-	public CreateRestaurantResponse(Long restaurantId) {
-		this.restaurantId = restaurantId;
-	}
-
-	public Long getRestaurantId() {
-		return restaurantId;
-	}
-
-	public void setRestaurantId(Long restaurantId) {
-		this.restaurantId = restaurantId;
-	}
 }
 

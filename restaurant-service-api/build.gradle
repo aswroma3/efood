@@ -1,5 +1,7 @@
 dependencies {
 	implementation project(":common-events")
+
+	compileOnly 'org.projectlombok:lombok:1.18.4'
 }
 
 jar {

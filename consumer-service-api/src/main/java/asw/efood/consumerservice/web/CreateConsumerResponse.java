@@ -1,22 +1,15 @@
 package asw.efood.consumerservice.web;
 
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateConsumerResponse {
 
 	private Long consumerId;
 
-	public CreateConsumerResponse() {
-	}
-
-	public CreateConsumerResponse(Long consumerId) {
-		this.consumerId = consumerId;
-	}
-
-	public Long getConsumerId() {
-		return consumerId;
-	}
-
-	public void setConsumerId(Long consumerId) {
-		this.consumerId = consumerId;
-	}
 }
 

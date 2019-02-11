@@ -1,28 +1,12 @@
 package asw.efood.consumerservice.web;
 
+import lombok.Data;
+
+@Data
 public class CreateConsumerRequest {
 
 	private String firstName;
-
 	private String lastName;
 
-	public CreateConsumerRequest() {
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 }
 

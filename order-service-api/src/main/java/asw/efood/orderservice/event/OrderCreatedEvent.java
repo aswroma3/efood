@@ -1,60 +1,21 @@
 package asw.efood.orderservice.event;
 
 import asw.efood.common.event.DomainEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderCreatedEvent implements DomainEvent {
 
     private Long orderId;
-
     private Long consumerId;
-
     private Long restaurantId;
-
     private List<LineItem> lineItems;
-
-    public OrderCreatedEvent() {
-    }
-
-    public OrderCreatedEvent(Long orderId, Long consumerId, Long restaurantId, List<LineItem> lineItems) {
-        this.orderId = orderId;
-        this.consumerId = consumerId;
-        this.restaurantId = restaurantId;
-        this.lineItems = lineItems;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Long getConsumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(Long consumerId) {
-        this.consumerId = consumerId;
-    }
-
-    public Long getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Long restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
-    public List<LineItem> getLineItems() {
-        return lineItems;
-    }
-
-    public void setLineItems(List<LineItem> lineItems) {
-        this.lineItems = lineItems;
-    }
 
     @Override
     public String toString() {
