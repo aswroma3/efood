@@ -1,0 +1,14 @@
+dependencies {
+	implementation project(":common-events")
+	implementation project(":consumer-service-api")
+	implementation project(":restaurant-service-api")
+	implementation project(":order-service-api")
+
+	implementation 'org.springframework.kafka:spring-kafka'
+	
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// implementation 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

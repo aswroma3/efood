@@ -1,0 +1,13 @@
+include "common-events"
+include "common-swagger"
+
+include "consumer-service-api"
+include "consumer-service"
+include "restaurant-service-api"
+include "restaurant-service"
+include "order-service-api"
+include "order-service"
+
+include "order-history-service"
+include "event-logger-service"
+

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "asw.efood.consumerservice.grpc";
+option java_outer_classname = "ConsumerServiceProto";
+option objc_class_prefix = "OS";
+
+package consumerservice;
+
+service ConsumerService {
+  rpc getConsumer(GetConsumerRequest) returns (GetConsumerReply) {}
+}
+
+message GetConsumerRequest {
+  string consumerId = 1;
+}
+
+message GetConsumerReply {
+  string consumerId = 1;
+  string firstName = 2;
+  string lastName = 3;
+}
+

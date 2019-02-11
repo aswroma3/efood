@@ -1,0 +1,10 @@
+dependencies {
+	implementation project(":common-events")
+}
+
+jar {
+	enabled = true
+}
+bootJar {
+	enabled = false
+}

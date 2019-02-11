@@ -1,0 +1,116 @@
+version: '3'
+services:
+#  mysql:
+#    build: ./mysql
+##    image: my-registry:5000/mysql
+#    ports:
+#      - 3306:3306
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=rootpassword
+#      - MYSQL_USER=mysqluser
+#      - MYSQL_PASSWORD=mysqlpw
+  postgres:
+    image: postgres
+    volumes:
+      - "$PWD/postgres:/docker-entrypoint-initdb.d"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:latest
+    depends_on:
+      - "zookeeper"
+    ports:
+      - "9092:9092"
+#      - "9094:9094"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 10.11.1.188
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "consumer-service-channel:1:1,restaurant-service-channel:1:1,order-service-channel:1:1"
+#      # HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+#      # HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+#      # KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://_{HOSTNAME_COMMAND}:9094
+#      # PORT_COMMAND: "docker port $$(hostname) 9092/tcp | cut -d: -f2
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://10.11.1.188:9094
+#      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+#      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+#      LOG4J_LOGGER_KAFKA_AUTHORIZER_LOGGER: DEBUG
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  consumer-service:
+    build: consumer-service
+#    image: my-registry:5000/consumer-service
+    ports:
+      - "8081:8080"
+    depends_on:
+#      - mysql
+      - postgres
+    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/userservice
+#      SPRING_DATASOURCE_USERNAME: mysqluser
+#      SPRING_DATASOURCE_PASSWORD: mysqlpw
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/consumerservice
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JAVA_OPTS: -Xmx192m
+  restaurant-service:
+    build: restaurant-service
+    #    image: my-registry:5000/restaurant-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      #      - mysql
+      - postgres
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/restaurantservice
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JAVA_OPTS: -Xmx192m
+  order-service:
+    build: order-service
+    #    image: my-registry:5000/order-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      #      - mysql
+      - postgres
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/orderservice
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JAVA_OPTS: -Xmx192m
+  order-history-service:
+    build: order-history-service
+    #    image: my-registry:5000/order-history-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      #      - mysql
+      - postgres
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/orderhistoryservice
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JAVA_OPTS: -Xmx192m
+  event-logger-service:
+    build: event-logger-service
+    #    image: my-registry:5000/event-logger-service
+    #ports:
+    #  - "8081:8080"
+    depends_on:
+      - kafka
+    environment:
+      JAVA_OPTS: -Xmx192m
+
