@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.mockito.ArgumentMatchers.same;
@@ -42,6 +44,7 @@ public class ConsumerServiceUnitTests {
 	private static final Long CONSUMER_ID = 42L;
 	private static final String CONSUMER_FIRST_NAME = "Mario";
 	private static final String CONSUMER_LAST_NAME = "Rossi";
+	private static final Consumer CONSUMER = new Consumer(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
 
 	@Before
 	public void setup() {
@@ -73,6 +76,31 @@ public class ConsumerServiceUnitTests {
 		verify(domainEventPublisher)
 				.publish(new ConsumerCreatedEvent(CONSUMER_ID, CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME), ConsumerServiceChannel.consumerServiceChannel);
 	}
+
+	@Test
+	public void findConsumerTest() {
+		/* verifica che, quando viene usato il servizio per cercare un consumatore:
+		 * 1) il consumatore viene cercato tramite il repository */
+
+		/* configura ConsumerRepository.findById per trovare il consumatore */
+		when(consumerRepository.findById(CONSUMER_ID))
+//				.thenReturn(Optional.of(CONSUMER));
+				.then(invocation -> {
+					Consumer consumer = new Consumer(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
+					consumer.setId(CONSUMER_ID);
+					return Optional.of(consumer);
+				});
+		
+		/* invoca la ricerca del consumatore */
+		Consumer consumer = consumerService.findById(CONSUMER_ID);
+
+		/* verifica che il consumatore è stato trovato */
+		verify(consumerRepository)
+				.findById(same(CONSUMER_ID));
+		assertThat(consumer.getFirstName()).isEqualTo(CONSUMER_FIRST_NAME);
+		assertThat(consumer.getLastName()).isEqualTo(CONSUMER_LAST_NAME);
+	}
+
 
 }
 
