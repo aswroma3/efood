@@ -6,6 +6,8 @@ import asw.efood.consumerservice.domain.ConsumerRepository;
 import asw.efood.consumerservice.domain.ConsumerService;
 import asw.efood.consumerservice.event.ConsumerCreatedEvent;
 import asw.efood.consumerservice.web.ConsumerController;
+import asw.efood.consumerservice.web.CreateConsumerRequest;
+import asw.efood.consumerservice.web.CreateConsumerResponse;
 import asw.efood.consumerservice.web.GetConsumerResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +75,30 @@ public class ConsumerControllerTests {
 //	}
 
 	@Test
+	public void postConsumerTest() {
+		/* verifica dell'operazione POST /consumers */
+
+		/* configura ConsumerService.create per creare il consumatore */
+		when(consumerService.create(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME))
+				.then(invocation -> {
+					Consumer consumer = new Consumer(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
+					consumer.setId(CONSUMER_ID);
+					return consumer;
+				});
+
+		/* invoca l'operazione POST /consumers */
+		CreateConsumerRequest request = new CreateConsumerRequest();
+		request.setFirstName(CONSUMER_FIRST_NAME);
+		request.setLastName(CONSUMER_LAST_NAME);
+		CreateConsumerResponse response = consumerController.createConsumer(request);
+
+		/* verifica che il servizio è stato invocato  */
+		verify(consumerService).create(same(CONSUMER_FIRST_NAME), same(CONSUMER_LAST_NAME));
+		assertThat(response.getConsumerId()).isEqualTo(CONSUMER_ID);
+	}
+
+
+	@Test
 	public void getConsumerTest() {
 		/* verifica dell'operazione GET /consumers/{consumerId} */
 
@@ -112,6 +138,8 @@ public class ConsumerControllerTests {
 		/* verifica che il servizio è stato invocato  */
 		verify(consumerService).findById(same(NONEXISTING_CONSUMER_ID));
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		GetConsumerResponse response = responseEntity.getBody();
+		assertThat(response).isNull();
 	}
 
 }
