@@ -49,31 +49,6 @@ public class ConsumerControllerTests {
 		MockitoAnnotations.initMocks(this);
 	}
 
-//	@Test
-//	public void createConsumerTest() {
-//		/* verifica che, quando viene usato il servizio per creare un consumatore:
-//		 * 1) il consumatore viene salvato tramite il repository e
-//		 * 2) viene pubblicato un evento di creazione del consumatore */
-//
-//		/* configura ConsumerRepository.save per settare l'id del consumatore */
-//		when(consumerRepository.save(any(Consumer.class)))
-//				.then(invocation -> {
-//					Consumer consumer = (Consumer) invocation.getArguments()[0];
-//					consumer.setId(CONSUMER_ID);
-//					return consumer;
-//				});
-//
-//		/* invoca la creazione del consumatore */
-//		Consumer consumer = consumerService.create(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
-//
-//		/* verifica che il consumatore è stato salvato */
-//		verify(consumerRepository)
-//				.save(same(consumer));
-//		/* verifica che è stato creato un evento di creazione del consumatore */
-//		verify(domainEventPublisher)
-//				.publish(new ConsumerCreatedEvent(CONSUMER_ID, CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME), ConsumerServiceChannel.consumerServiceChannel);
-//	}
-
 	@Test
 	public void postConsumerTest() {
 		/* verifica dell'operazione POST /consumers */
@@ -94,6 +69,9 @@ public class ConsumerControllerTests {
 
 		/* verifica che il servizio è stato invocato  */
 		verify(consumerService).create(same(CONSUMER_FIRST_NAME), same(CONSUMER_LAST_NAME));
+
+		/* verifica la risposta  */
+		/* TODO: notare che non ho modo di verificare lo stato HTTP */
 		assertThat(response.getConsumerId()).isEqualTo(CONSUMER_ID);
 	}
 
@@ -115,6 +93,9 @@ public class ConsumerControllerTests {
 
 		/* verifica che il servizio è stato invocato  */
 		verify(consumerService).findById(same(CONSUMER_ID));
+
+		/* verifica la risposta  */
+		/* TODO: ha senso verificare lo stato HTTP? */
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		GetConsumerResponse response = responseEntity.getBody();
 		assertThat(response.getConsumerId()).isEqualTo(CONSUMER_ID);
@@ -137,6 +118,9 @@ public class ConsumerControllerTests {
 
 		/* verifica che il servizio è stato invocato  */
 		verify(consumerService).findById(same(NONEXISTING_CONSUMER_ID));
+
+		/* verifica la risposta  */
+		/* TODO: ha senso verificare lo stato HTTP? */
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		GetConsumerResponse response = responseEntity.getBody();
 		assertThat(response).isNull();
