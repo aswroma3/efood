@@ -26,9 +26,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/* Test unitari per un servizio del dominio. */
+/* Test unitari per un servizio del dominio,
+ * basato su mock dei servizi infrastrutturali utilizzati (repository e event publisher). */
 @SpringBootTest
-public class ConsumerServiceUnitTests {
+public class ConsumerServiceTests {
 
 	/* vedi anche https://dzone.com/articles/use-mockito-mock-autowired */
 
@@ -44,11 +45,10 @@ public class ConsumerServiceUnitTests {
 	private static final Long CONSUMER_ID = 42L;
 	private static final String CONSUMER_FIRST_NAME = "Mario";
 	private static final String CONSUMER_LAST_NAME = "Rossi";
-	private static final Consumer CONSUMER = new Consumer(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
 
 	@Before
 	public void setup() {
-		/* inizializza i mocke ed il servizio da testare */
+		/* inizializza i mock ed il servizio da testare */
 		MockitoAnnotations.initMocks(this);
 	}
 
@@ -90,7 +90,7 @@ public class ConsumerServiceUnitTests {
 					consumer.setId(CONSUMER_ID);
 					return Optional.of(consumer);
 				});
-		
+
 		/* invoca la ricerca del consumatore */
 		Consumer consumer = consumerService.findById(CONSUMER_ID);
 
