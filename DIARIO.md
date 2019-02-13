@@ -249,6 +249,15 @@ Concentriamoci ora sulla scrittura di test, di diverse tipologie.
 Queste tipologie di test sono descritte in maggior dettaglio nelle sezioni successive, 
 soprattutto con riferimento ai test per il servizio *consumer-service*. 
 
+### Test solitari e test socievoli 
+
+Microservices patterns distingue tra test *solitari* e test *socievoli*. 
+
+* Nei test solitari, un componente viene testato in isolamento. 
+  Se ha delle dipendenze, queste dipendenze sono gestite mediante dei test double, come dei mock.
+* Nei test socievoli, un componente viene testato facendolo interagire effettivamente con i componenti da cui dipende. 
+
+
 ### Test per le entità 
 
 Sono stati realizzati test unitari per l'entità *Consumer*. 
@@ -256,7 +265,10 @@ Si veda la classe di test *ConsumerUnitTests*.
 In questo caso sono molto molto semplici. 
 
 In genere vanno scritti test unitari di questo tipo per le entità, i value object e gli aggregati.
-Sono in genere piuttosto semplici, perché non ci sono (non ci dovrebbero essere) grosse dipendenze. 
+Sono in genere piuttosto semplici, perché non ci sono (non ci dovrebbero essere) grosse dipendenze, se non da altri oggetti semplici. 
+Se ci sono delle dipendenze, possono essere eseguito come dei test socievoli. 
+Per esempio, un aggregato viene testato insieme alle sue entità ed ai suoi value object.  
+
 
 ### Test per i servizi di dominio 
  
@@ -267,10 +279,7 @@ Per le operazioni più semplici, si possono scrivere ancora dei test unitari.
 
 Tuttavia, un servizio di dominio può dipendere in genere da altri servizi infrastrutturali.
 In questo caso sono necessari anche dei test di integrazione. 
-Questi possono essere *solitari* oppure *socievoli*. 
-Nei test solitari le dipendenze sono gestite mediante dei mock. 
-In quelli socievoli, il componente da testare viene fatto effettivamente interagire con i componenti da cui dipende. 
-
+Questi possono essere solitari oppure socievoli. 
 In questo caso sono stati realizzati dei test solitari. Per i mock è stato usato *Mockito*. 
 
 In questo modo è stata possibile verificare la corretta interazione tra il servizio 
@@ -306,6 +315,19 @@ Si veda la classe di test *OrderDomainEventConsumerTests*.
 
 Il modo di procedere è analogo al test di primo tipo di un controller. 
 In effetti, mancano test analoghi a quelli di secondo tipo per un controller.  
+
+### Commento 
+
+Finora sono stati realizzati solo dei test semplici, che verificano un componente in isolamento, 
+sostituendo le sue eventuali dipendenze mediante dei mock. 
+
+Questi test: 
+* non richiedono un ambiente di esecuzione specifico (possono essere eseguiti nel PC dello sviluppatore o in un server CI) 
+* tuttavia, nemmeno verificano l'effettiva comunicazione interprocesso tra servizi diversi 
+* Microservices Patterns chiama *test unitari* i precedenti test  
+
+
+
 
 ### Problemi aperti 
 
