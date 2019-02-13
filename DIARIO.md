@@ -228,7 +228,7 @@ Serve un meccanismo che, sulla base del tipo dell'evento, invoca un metodo oppor
 
 ## Query 
 
-E' stato poi implementato un servizio *order-history-service* per rispondere a due interrogazioni: 
+Ho poi implementato un servizio *order-history-service* per rispondere a due interrogazioni: 
 * *GET /orders/{orderId}* che restituisce informazioni riassuntive sull'ordine 
 * *GET /orders/{consumerId}* che restituisce informazioni riassuntive sugli ordini effettuati da un certo consumatore 
 
@@ -236,6 +236,82 @@ L'approccio è ispirato a **CQRS** (anche se CQRS non viene seguito in modo stre
 Poi risponde a queste interrogazioni usando solo dati locali.  
 
 Per ora è stata fatta solo un'implementazione elementare di *GET /orders/{orderId}* (che peraltro fa un bruttissimo join applicativo), però funzionante.  
+
+
+## Test 
+
+Concentriamoci ora sulla scrittura di test, di diverse tipologie. 
+* Test per le entità 
+* Test per i servizi di dominio 
+* Test per i controller REST 
+* Test per la ricezione di eventi 
+
+Queste tipologie di test sono descritte in maggior dettaglio nelle sezioni successive, 
+soprattutto con riferimento ai test per il servizio *consumer-service*. 
+
+### Test per le entità 
+
+Sono stati realizzati test unitari per l'entità *Consumer*. 
+Si veda la classe di test *ConsumerUnitTests*.
+In questo caso sono molto molto semplici. 
+
+In genere vanno scritti test unitari di questo tipo per le entità, i value object e gli aggregati.
+Sono in genere piuttosto semplici, perché non ci sono (non ci dovrebbero essere) grosse dipendenze. 
+
+### Test per i servizi di dominio 
+ 
+Sono stati realizzati test per il servizio di dominio *ConsumerService*.
+Si veda la classe di test *ConsumerServiceTests*.
+
+Per le operazioni più semplici, si possono scrivere ancora dei test unitari. 
+
+Tuttavia, un servizio di dominio può dipendere in genere da altri servizi infrastrutturali.
+In questo caso sono necessari anche dei test di integrazione. 
+Questi possono essere *solitari* oppure *socievoli*. 
+Nei test solitari le dipendenze sono gestite mediante dei mock. 
+In quelli socievoli, il componente da testare viene fatto effettivamente interagire con i componenti da cui dipende. 
+
+In questo caso sono stati realizzati dei test solitari. Per i mock è stato usato *Mockito*. 
+
+In questo modo è stata possibile verificare la corretta interazione tra il servizio 
+ed il repository che utilizza (mockato) ed anche la pubblicazione di eventi (mockata). 
+* Per esempio, che quando viene creato un consumatore, viene richiesto il salvataggio del consumatore al repository. 
+* Per esempio, che quando viene creato un consumatore, viene pubblicato un evento relativo alla creazione del consumatore. 
+
+### Test per i controller REST 
+
+Sono stati realizzati test per il controller REST *ConsumerController*.
+Si vedano le classi di test *ConsumerControllerTests* e *ConsumerControllerMvcTests*.
+
+Queste due classi implementano test leggermente diversi, tra di loro complementari. 
+
+In entrambi i casi, le dipendenze del controller (in questo caso, da *ConsumerService*) sono state gestite mediante dei mock. 
+
+* La classe *ConsumerControllerTests* realizza dei test di integrazione tra *ConsumerController* e *ConsumerService*. 
+  Per esempio, il test crea un oggetto richiesta, invoca direttamente un metodo del controller, 
+  poi verifica sia l'oggetto risposta che la corretta interazione con il servizio. 
+  L'interazione con il controller avviene mediante oggetti Java.  
+
+* La classe *ConsumerControllerMvcTests* realizza dei test di integrazione tra *ConsumerController* e *ConsumerService* 
+  ma sul piano REST.  
+  Per esempio, il test invoca il controller mediante l'esecuzione di una richiesta GET o POST, 
+  poi riceve una risposta JSON e verifica se contiene i campi desiderati. 
+  Dunque, l'interazione con il controller avviene mediante richieste HTTP e dati JSON.  
+
+### Test per la ricezione di eventi 
+
+Finora è stata solo verificata la generazione di eventi, ma non ancora la ricezione di eventi. 
+A tal fine sono stati realizzati test per l'adattatore *OrderDomainEventConsumer*.
+Si veda la classe di test *OrderDomainEventConsumerTests*.
+
+Il modo di procedere è analogo al test di primo tipo di un controller. 
+In effetti, mancano test analoghi a quelli di secondo tipo per un controller.  
+
+### Problemi aperti 
+
+Rispetto a Microservices Patterns, non ho ancora considerato (né capito bene) l'uso dei test guidati dai contratti. 
+
+Non ho ancora implementato nessun test di tipo socievole. 
 
 
 ## Problemi aperti leggendo Implementi DDD 

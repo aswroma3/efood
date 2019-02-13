@@ -5,6 +5,8 @@ import asw.efood.consumerservice.domain.Consumer;
 import asw.efood.consumerservice.domain.ConsumerRepository;
 import asw.efood.consumerservice.domain.ConsumerService;
 import asw.efood.consumerservice.event.ConsumerCreatedEvent;
+import asw.efood.consumerservice.event.OrderConsumerInvalidatedEvent;
+import asw.efood.consumerservice.event.OrderConsumerValidatedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,12 @@ public class ConsumerServiceTests {
 	private static final String CONSUMER_FIRST_NAME = "Mario";
 	private static final String CONSUMER_LAST_NAME = "Rossi";
 
+	private static final Long INVALID_CONSUMER_ID = 81L;
+
+	private static final Long VALID_ORDER_ID = 142L;
+	private static final Long INVALID_ORDER_ID = 181L;
+
+
 	@Before
 	public void setup() {
 		/* inizializza i mock ed il servizio da testare */
@@ -78,7 +86,7 @@ public class ConsumerServiceTests {
 	}
 
 	@Test
-	public void findConsumerTest() {
+	public void finConsumerdByIdTest() {
 		/* verifica che, quando viene usato il servizio per cercare un consumatore:
 		 * 1) il consumatore viene cercato tramite il repository */
 
@@ -99,6 +107,50 @@ public class ConsumerServiceTests {
 				.findById(same(CONSUMER_ID));
 		assertThat(consumer.getFirstName()).isEqualTo(CONSUMER_FIRST_NAME);
 		assertThat(consumer.getLastName()).isEqualTo(CONSUMER_LAST_NAME);
+	}
+
+	@Test
+	public void validateOrderConsumerTest() {
+		/* verifica che, quando viene richiesta la validazione del consumatore di un ordine,
+		 * se questo c'è allora viene pubblicato un evento di validazione del consumatore */
+
+		/* configura ConsumerRepository.findById per trovare il consumatore */
+		when(consumerRepository.findById(CONSUMER_ID))
+				.then(invocation -> {
+					Consumer consumer = new Consumer(CONSUMER_FIRST_NAME, CONSUMER_LAST_NAME);
+					consumer.setId(CONSUMER_ID);
+					return Optional.of(consumer);
+				});
+
+		/* invoca la richiesta di validazione di un ordine da parte del consumatore */
+		consumerService.validateOrderConsumer(VALID_ORDER_ID, CONSUMER_ID);
+
+		/* verifica che il consumatore è stato cercato */
+		verify(consumerRepository).findById(same(CONSUMER_ID));
+		/* verifica che è stato creato un evento di validazione del consumatore dell'ordine */
+		verify(domainEventPublisher)
+				.publish(new OrderConsumerValidatedEvent(VALID_ORDER_ID, CONSUMER_ID), ConsumerServiceChannel.consumerServiceChannel);
+	}
+
+	@Test
+	public void invalidateOrderConsumerTest() {
+		/* verifica che, quando viene richiesta la validazione del consumatore di un ordine,
+		 * se questo non c'è allora viene pubblicato un evento di invalidazione del consumatore */
+
+		/* configura ConsumerRepository.findById per non trovare il consumatore */
+		when(consumerRepository.findById(INVALID_CONSUMER_ID))
+				.then(invocation -> {
+					return Optional.empty();
+				});
+
+		/* invoca la richiesta di validazione di un ordine da parte del consumatore */
+		consumerService.validateOrderConsumer(INVALID_ORDER_ID, INVALID_CONSUMER_ID);
+
+		/* verifica che il consumatore è stato cercato */
+		verify(consumerRepository).findById(same(INVALID_CONSUMER_ID));
+		/* verifica che è stato creato un evento di invalidazione del consumatore dell'ordine */
+		verify(domainEventPublisher)
+				.publish(new OrderConsumerInvalidatedEvent(INVALID_ORDER_ID, INVALID_CONSUMER_ID), ConsumerServiceChannel.consumerServiceChannel);
 	}
 
 

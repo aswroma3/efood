@@ -29,6 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /* Test unitari per un controller, basato su Spring Mock MVC. */
 @SpringBootTest
@@ -83,10 +85,10 @@ public class ConsumerControllerMvcTests {
 					"\"lastName\":\"" + CONSUMER_LAST_NAME + "\" " +
 				" }";
 		mockMvc
-				.perform(MockMvcRequestBuilders.post("/consumers/").contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
-				.andExpect(MockMvcResultMatchers.status().isOk())
+				.perform(post("/consumers/").contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
+				.andExpect(status().isOk())
 				/* verifica gli elementi della risposta JSON */
-				.andExpect(MockMvcResultMatchers.jsonPath("$.consumerId").value(CONSUMER_ID));
+				.andExpect(jsonPath("$.consumerId").value(CONSUMER_ID));
 	}
 
 
@@ -104,12 +106,12 @@ public class ConsumerControllerMvcTests {
 
 		/* invoca l'operazione GET /consumers/{consumerId} */
 		mockMvc
-				.perform(MockMvcRequestBuilders.get("/consumers/{consumerId}", CONSUMER_ID).accept(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().isOk())
+				.perform(get("/consumers/{consumerId}", CONSUMER_ID).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
 				/* verifica gli elementi della risposta JSON */
-				.andExpect(MockMvcResultMatchers.jsonPath("$.consumerId").value(CONSUMER_ID))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(CONSUMER_FIRST_NAME))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(CONSUMER_LAST_NAME));
+				.andExpect(jsonPath("$.consumerId").value(CONSUMER_ID))
+				.andExpect(jsonPath("$.firstName").value(CONSUMER_FIRST_NAME))
+				.andExpect(jsonPath("$.lastName").value(CONSUMER_LAST_NAME));
 	}
 
 	@Test
@@ -124,8 +126,8 @@ public class ConsumerControllerMvcTests {
 
 		/* invoca l'operazione GET /consumers/{consumerId} */
 		mockMvc
-				.perform(MockMvcRequestBuilders.get("/consumers/{consumerId}", NONEXISTING_CONSUMER_ID).accept(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().isNotFound());
+				.perform(get("/consumers/{consumerId}", NONEXISTING_CONSUMER_ID).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
 	}
 
 }
