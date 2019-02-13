@@ -259,9 +259,9 @@ Poi risponde a queste interrogazioni usando solo dati locali.
 Per ora è stata fatta solo un'implementazione elementare di *GET /orders/{orderId}* (che peraltro fa un bruttissimo join applicativo), però funzionante.  
 
 
-## Test 
+## Test unitari 
 
-Concentriamoci ora sulla scrittura di test, di diverse tipologie. 
+Concentriamoci ora sulla scrittura di test unitari, di diverse tipologie. 
 * Test per le entità 
 * Test per i servizi di dominio 
 * Test per i controller REST 
@@ -339,8 +339,8 @@ In effetti, mancano test analoghi a quelli di secondo tipo per un controller.
 
 ### Commento 
 
-Finora sono stati realizzati solo dei test semplici, che verificano un componente in isolamento, 
-sostituendo le sue eventuali dipendenze mediante dei mock. 
+Finora sono stati realizzati solo dei semplici test unitari, relativi al servizio *consumer-service*, 
+che verificano ciascun componente in isolamento, sostituendo le sue eventuali dipendenze mediante dei mock. 
 
 Questi test: 
 * non richiedono un ambiente di esecuzione specifico (possono essere eseguiti nel PC dello sviluppatore o in un server CI) 
@@ -348,13 +348,31 @@ Questi test:
 * Microservices Patterns chiama *test unitari* i precedenti test  
 
 
-
-
 ### Problemi aperti 
 
 Rispetto a Microservices Patterns, non ho ancora considerato (né capito bene) l'uso dei test guidati dai contratti. 
 
 Non ho ancora implementato nessun test di tipo socievole. 
+
+
+## Test di integrazione 
+
+Consideriamo ora la scrittura di test di integrazione. 
+Consideriamo test relativi ad un sottoinsieme di funzionalità del servizio *order-service*.
+
+Questi test sono nel source set *integration-test*, poiché non si tratta di test unitari. 
+
+
+
+
+### Test di un repository 
+
+La classe *OrderJpaRepositoryTests* testa il repository *OrderRepository*.
+
+In questo caso c'è una dipendenza da Postgres. Il test (inizialmente) fallisce se Postgres non è in esecuzione.
+Il file gradle è stato modificato per avviare Postgres durante l'esecuzione dei test, mediante Docker Compose. 
+
+   
 
 
 ## Problemi aperti leggendo Implementi DDD 

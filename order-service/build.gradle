@@ -1,3 +1,25 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		// classpath("org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:2.1.1")
+		classpath "com.avast.gradle:gradle-docker-compose-plugin:$dockerComposePluginVersion"
+	}
+}
+
+plugins {
+	id 'org.unbroken-dome.test-sets' version '2.1.1'
+}
+
+//apply plugin: 'org.unbroken-dome.test-sets'
+apply plugin: 'docker-compose'
+
+testSets {
+	integrationTest { dirName = 'integration-test' }
+}
+
 dependencies {
 	implementation project(":order-service-api")
 	implementation project(":consumer-service-api")
@@ -15,9 +37,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	// implementation 'mysql:mysql-connector-java'
 	implementation 'org.postgresql:postgresql'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
 	implementation "io.grpc:grpc-stub:${grpcVersion}"
 	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
