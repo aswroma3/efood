@@ -20,6 +20,24 @@ testSets {
 	integrationTest { dirName = 'integration-test' }
 }
 
+
+dockerCompose {
+
+//	startedServices = []
+	useComposeFiles = ['../docker-compose-integration-test.yml']
+	stopContainers = false
+	// i contenitori possono poi essere arrestati con gradle :order-service:composeDownForced
+	
+}
+
+dockerCompose.isRequiredBy(integrationTest)
+
+integrationTest.doFirst {
+	dockerCompose.exposeAsEnvironment(test)
+}
+
+// integrationTest.dependsOn(integrationTestComposeUp)
+
 dependencies {
 	implementation project(":order-service-api")
 	implementation project(":consumer-service-api")
@@ -44,5 +62,4 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 }

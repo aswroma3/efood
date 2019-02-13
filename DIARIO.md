@@ -362,9 +362,6 @@ Consideriamo test relativi ad un sottoinsieme di funzionalità del servizio *ord
 
 Questi test sono nel source set *integration-test*, poiché non si tratta di test unitari. 
 
-
-
-
 ### Test di un repository 
 
 La classe *OrderJpaRepositoryTests* testa il repository *OrderRepository*.
