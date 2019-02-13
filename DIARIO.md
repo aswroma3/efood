@@ -322,8 +322,14 @@ In entrambi i casi, le dipendenze del controller (in questo caso, da *ConsumerSe
   poi verifica sia l'oggetto risposta che la corretta interazione con il servizio. 
   L'interazione con il controller avviene mediante oggetti Java.  
 
-* La classe *ConsumerControllerMvcTests* realizza dei test di integrazione tra *ConsumerController* e *ConsumerService* 
-  ma sul piano REST.  
+* La classe *ConsumerControllerMockMvcTests* realizza dei test di integrazione tra *ConsumerController* e *ConsumerService* 
+  ma sul piano REST, usando *MockMvc*.   
+  Per esempio, il test invoca il controller mediante l'esecuzione di una richiesta GET o POST, 
+  poi riceve una risposta JSON e verifica se contiene i campi desiderati. 
+  Dunque, l'interazione con il controller avviene mediante richieste HTTP e dati JSON.  
+
+* La classe *ConsumerControllerRestAssuredMockMvcTests* realizza dei test di integrazione tra *ConsumerController* e *ConsumerService* 
+  ma sul piano REST, usando *Rest Assured MockMvc*.   
   Per esempio, il test invoca il controller mediante l'esecuzione di una richiesta GET o POST, 
   poi riceve una risposta JSON e verifica se contiene i campi desiderati. 
   Dunque, l'interazione con il controller avviene mediante richieste HTTP e dati JSON.  

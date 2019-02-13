@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /* Test unitari per un controller, basato su Spring Mock MVC. */
 @SpringBootTest
 // @RunWith(SpringRunner.class)
-public class ConsumerControllerMvcTests {
+public class ConsumerControllerMockMvcTests {
 
 	/* il servizio da testare, in cui iniettare i successivi mock */
 	@InjectMocks

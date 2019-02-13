@@ -15,6 +15,10 @@ dependencies {
 	implementation 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	testCompile 'io.rest-assured:rest-assured:3.3.0'
+	testCompile 'io.rest-assured:spring-mock-mvc:3.3.0'
+	testCompile "io.rest-assured:json-path:3.3.0"
+
 	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
 	implementation "io.grpc:grpc-stub:${grpcVersion}"
 	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
