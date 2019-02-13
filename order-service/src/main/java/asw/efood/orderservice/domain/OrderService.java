@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class OrderService {
+
+	private Logger log = Logger.getLogger("OrderService");
 
 	@Autowired
 	private OrderRepository orderRepository;
@@ -29,12 +32,13 @@ public class OrderService {
 
 	/* Creazione di un nuovo ordine. */
 	public Order create(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
-		return createAsincrona(consumerId, restaurantId, orderLineItems);
+		// return createAsincrona(consumerId, restaurantId, orderLineItems);
 		// return createSincrona(consumerId, restaurantId, orderLineItems);
+		return createSemiSincrona(consumerId, restaurantId, orderLineItems);
 	}
 
 	/* Creazione di un nuovo ordine. Versione basata su eventi. */
-	public Order createAsincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
+	private Order createAsincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		/* crea e salva l'ordine */
 		Order order = Order.create(consumerId, restaurantId, orderLineItems);
 		order = orderRepository.save(order);
@@ -44,7 +48,7 @@ public class OrderService {
 		return order;
 	}
 
-	private OrderCreatedEvent makeOrderCreatedEvent(Order order) {
+	public OrderCreatedEvent makeOrderCreatedEvent(Order order) {
 		List<LineItem> lineItems = order.getOrderLineItems()
 				.stream()
 				.map(x -> new LineItem(x.getMenuItemId(), x.getQuantity()))
@@ -53,7 +57,7 @@ public class OrderService {
 	}
 
 	/* Creazione di un nuovo ordine. Versione sincrona (senza eventi) e sequenziale. */
-	public Order createSincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
+	private Order createSincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
 		Order order = Order.create(consumerId, restaurantId, orderLineItems);
 		order = orderRepository.save(order);
 		boolean consumerOk = consumerService.validateConsumer(order.getConsumerId());
@@ -65,7 +69,7 @@ public class OrderService {
 		} else if (consumerOk) {
 			order.setState(OrderState.CONSUMER_APPROVED);
 		} else if (restaurantOk) {
-			order.setState(OrderState.DETAILS_APPROVED);
+			order.setState(OrderState.RESTAURANT_APPROVED);
 		} else {
 			order.setState(OrderState.INVALID);
 		}
@@ -73,16 +77,47 @@ public class OrderService {
 		return order;
 	}
 
+	/* Creazione di un nuovo ordine.
+	 * Versione semisincrona: il ristorante viene verificato in modo sincrono, il consumatore in modo asincrono. */
+	private Order createSemiSincrona(Long consumerId, Long restaurantId, List<OrderLineItem> orderLineItems) {
+		/* crea e salva l'ordine */
+		Order order = Order.create(consumerId, restaurantId, orderLineItems);
+		order = orderRepository.save(order);
+		log.info("Created order: " + order);
+		/* verifica il ristorante in modo sincrono */
+		boolean restaurantOk = restaurantService.validateRestaurant(order.getRestaurantId());
+		if (restaurantOk) {
+			order.setState(OrderState.RESTAURANT_APPROVED);
+		} else {
+			order.setState(OrderState.INVALID);
+		}
+		order = orderRepository.save(order);
+		log.info("Updated order: " + order);
+		/* crea l'evento corrispondente (anche per verificare il consumatore) */
+		OrderCreatedEvent event = makeOrderCreatedEvent(order);
+		domainEventPublisher.publish(event, OrderServiceChannel.orderServiceChannel);
+		return order;
+	}
+
 	public Order findById(Long orderId) {
-		return orderRepository.findById(orderId).orElse(null);
+		log.info("Looking for order: " + orderId);
+		Order order = orderRepository.findById(orderId).orElse(null);
+		log.info("Found order: " + order);
+		return order;
 	}
 
 	public Order confirmConsumer(Long orderId, Long consumerId) {
-		Order order = findById(orderId);
+		log.info("Confirming order: " + orderId + " for consumer: " + consumerId);
+		/* TODO: in modo misterioso, cercando l'ordine usando l'operazione del servizio non funziona */
+		// Order order = findById(orderId);
+		/* TODO: funziona invece usando l'operazione del repository */
+		/* TODO: potrebbe essere legato all'uso di @Transactional? */
+		Order order = orderRepository.findById(orderId).orElse(null);
+		log.info("Confirming order: " + order);
 		if (order.getState().equals(OrderState.PENDING)) {
 			order.setState(OrderState.CONSUMER_APPROVED);
 			order = orderRepository.save(order);
-		} else if (order.getState().equals(OrderState.DETAILS_APPROVED)) {
+		} else if (order.getState().equals(OrderState.RESTAURANT_APPROVED)) {
 			order.setState(OrderState.APPROVED);
 			order = orderRepository.save(order);
 		}

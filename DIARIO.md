@@ -120,6 +120,7 @@ Noi ci siamo ispirati alla soluzione adottata da FTGO (ad esempio, in *Restauran
 Il package *consumer-service-api* alla fine definisce solo le richieste e le risposte dell'API REST, ma non ne definisce le operazioni. 
 Sarebbe utile capire se c'è un modo semplice ed elegante per fornire una definizione precisa dell'API REST di un servizio (o quanto meno per descriverla). 
 
+
 ## Invocazione remota di un servizio  
 
 Consideriamo ora la realizzazione di un client per il servizio *consumer-service*, per esempio da parte del servizio *order-service*. 
@@ -224,6 +225,26 @@ Consideriamo il fatto che il servizio *consumer-service* possa voler ricevere ed
 
 C'è un modo elegante per evitare la cascata di if-else? 
 Serve un meccanismo che, sulla base del tipo dell'evento, invoca un metodo opportuno e gli passa come parametro l'evento.   
+
+
+## Gestione degli ordini 
+
+Il servizio più complesso è *order-service* per la gestione degli ordini. 
+
+In particolare l'operazione più complessa è la creazione di un ordine.
+La creazione di un ordine avviene in questo modo: 
+* all'inizio viene creato un ordine nello stato *PENDING* e salvato dal servizio degli ordini 
+* è poi necessaria la convalida di un ordine che richiede sia la convalida del consumatore che la convalida del ristorante 
+* al momento, la convalida minimale prevista è la semplice verifica dell'esistenza di un consumatore e di un ristorante con gli id specificati nell'ordine 
+* queste due convalide possono essere essere effettuate in modo sincrono oppure in modo asincrono 
+* per motivi didattici (possibilità di fare esperimenti e test) si è deciso che la verifica del ristorante è sincrona, e la verifica del cliente è asincrona   
+
+
+### Problemi aperti 
+
+L'uso di *@Transactional* è misterioso. 
+Se un'operazione di *OrderService* cerca un ordine invocando *OrderService.findById*, la ricerca fallisce. 
+Se invece un'operazione di *OrderService* cerca un ordine invocando *OrderRepository.findById*, allora la ricerca ha successo. 
 
 
 ## Query 

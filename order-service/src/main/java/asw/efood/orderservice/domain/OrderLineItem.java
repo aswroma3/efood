@@ -31,4 +31,12 @@ public class OrderLineItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "OrderLineItem{" +
+                "menuItemId='" + menuItemId + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
